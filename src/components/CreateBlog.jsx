@@ -41,8 +41,9 @@ const CreateBlog = () => {
             <main className="p-4">
                 <form onSubmit={handleCreate} className="bg-white p-6 shadow-lg rounded-lg max-w-xl mx-auto">
                     <div className="mb-4">
-                        <label className="block text-gray-700">Tiêu đề</label>
+                        <label  htmlFor="title" className="block text-gray-700">Tiêu đề</label>
                         <input
+                            id="title"
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
@@ -52,8 +53,9 @@ const CreateBlog = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-gray-700">Nội dung</label>
+                        <label htmlFor="content"  className="block text-gray-700">Nội dung</label>
                         <textarea
+                            id="content"
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             className="w-full px-4 py-2 border rounded-lg"

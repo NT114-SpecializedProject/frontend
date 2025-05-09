@@ -4,7 +4,7 @@ import CreateBlog from '../CreateBlog';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
-
+import { MemoryRouter } from 'react-router-dom';
 // Mocking axios, useNavigate, and useAuth
 jest.mock('axios');
 jest.mock('react-router-dom', () => ({
@@ -20,16 +20,26 @@ describe('CreateBlog Component', () => {
     const mockNavigate = jest.fn();
 
     beforeEach(() => {
-        useNavigate.mockReturnValue(mockNavigate);
-        useAuth.mockReturnValue({ userId: '123' }); // Giả sử userId là '123'
-    });
+    jest.clearAllMocks(); // Dọn dẹp mocks trước mỗi test
+    useNavigate.mockReturnValue(mockNavigate);
+    useAuth.mockReturnValue({ userId: '123' });
+});
+
 
     test('renders CreateBlog without crashing', () => {
-        render(<CreateBlog />);
+       render(
+    <MemoryRouter>
+        <CreateBlog />
+    </MemoryRouter>
+);
     });
 
     test('should display input fields for title and content', () => {
-        render(<CreateBlog />);
+       render(
+    <MemoryRouter>
+        <CreateBlog />
+    </MemoryRouter>
+);
         expect(screen.getByLabelText(/Tiêu đề/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/Nội dung/i)).toBeInTheDocument();
     });
@@ -37,8 +47,11 @@ describe('CreateBlog Component', () => {
     test('should call axios to create a blog when form is submitted', async () => {
         axios.post.mockResolvedValueOnce({ data: { success: true } });
 
-        render(<CreateBlog />);
-
+        render(
+    <MemoryRouter>
+        <CreateBlog />
+    </MemoryRouter>
+);
         // Nhập dữ liệu vào form
         fireEvent.change(screen.getByLabelText(/Tiêu đề/i), {
             target: { value: 'Test Blog Title' },
@@ -71,7 +84,11 @@ describe('CreateBlog Component', () => {
     test('should display error if blog creation fails', async () => {
         axios.post.mockRejectedValueOnce(new Error('Failed to create blog'));
 
-        render(<CreateBlog />);
+        render(
+    <MemoryRouter>
+        <CreateBlog />
+    </MemoryRouter>
+);
 
         // Nhập dữ liệu vào form
         fireEvent.change(screen.getByLabelText(/Tiêu đề/i), {
