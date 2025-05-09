@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Navbar from '../Navbar';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,10 +29,11 @@ describe('Navbar Component', () => {
             logout: jest.fn(),
         });
 
+       
         render(
-            <Router>
-                <Navbar />
-            </Router>
+            <BrowserRouter>
+            <Navbar />
+            </BrowserRouter>
         );
 
         expect(screen.getByText(/Đăng nhập/i)).toBeInTheDocument();
@@ -47,10 +48,10 @@ describe('Navbar Component', () => {
         });
 
         render(
-            <Router>
-                <Navbar />
-            </Router>
-        );
+            <BrowserRouter>
+              <Navbar />
+            </BrowserRouter>
+          );
 
         expect(screen.getByText(/Trang chủ/i)).toBeInTheDocument();
         expect(screen.getByText(/Tạo blog/i)).toBeInTheDocument();
@@ -68,10 +69,10 @@ describe('Navbar Component', () => {
         });
 
         render(
-            <Router>
-                <Navbar />
-            </Router>
-        );
+            <BrowserRouter>
+              <Navbar />
+            </BrowserRouter>
+          );
 
         fireEvent.click(screen.getByText(/Đăng xuất/i));
 
@@ -89,10 +90,10 @@ describe('Navbar Component', () => {
         });
 
         render(
-            <Router>
-                <Navbar />
-            </Router>
-        );
+            <BrowserRouter>
+              <Navbar />
+            </BrowserRouter>
+          );
 
         // Kiểm tra navbar hiển thị ban đầu
         expect(screen.getByText(/Trang chủ/i)).toBeInTheDocument();
