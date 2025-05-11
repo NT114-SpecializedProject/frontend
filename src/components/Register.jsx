@@ -29,7 +29,7 @@ const Register = () => {
             setMessage('Đăng ký thành công!');
             navigate('/home', { state: { userId } }); // 🔄 Redirect có userId
         } catch (error) {
-            setMessage('Đăng ký thất bại. Tài khoản đã tồn tại?');
+            setMessage('Đăng ký thất bại. Tài khoản đã tồn tại');
         }
     };
 
