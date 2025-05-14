@@ -25,7 +25,7 @@ const Login = () => {
             console.log('userId: ', userId);
             const fullName = response.data.fullName;
             login(fullName, userId); // 🛡️ Gọi hàm login từ AuthContext
-            setMessage(`Đăng nhập thành công!`);
+            setMessage(`Đăng nhập tài khoản thành công!`);
             navigate('/home');
         } catch (error) {
             setMessage(error.response?.status === 401 ? 'Sai tài khoản hoặc mật khẩu' : 'Lỗi kết nối đến máy chủ');
