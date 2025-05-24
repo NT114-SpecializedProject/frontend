@@ -9,14 +9,14 @@ const Login = () => {
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const { login } = useAuth(); // 🛡️ Sử dụng AuthContext
-
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/user/login', {
+            const response = await axios.post(`${API_BASE_URL}/api/v1/user/login`, {
                 email,
                 password
             });
