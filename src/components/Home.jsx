@@ -10,11 +10,11 @@ const Home = () => {
     const [visibleComments, setVisibleComments] = useState({});
     const [fetchedComments, setFetchedComments] = useState({});
     const [newComment, setNewComment] = useState({});
-
+    const API_BASE_URL= process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/v1/blog/all');
+                const response = await axios.get(`${API_BASE_URL}/api/v1/blog/all`);
 
                 // Kiểm tra lại giá trị authorId và đảm bảo nó có mặt
                 const enrichedBlogs = response.data.map(blog => ({
@@ -36,7 +36,7 @@ const Home = () => {
 
     const handleLike = async (blogId) => {
         try {
-            await axios.post(`http://localhost:8080/api/v1/like/${blogId}`);
+            await axios.post(`${API_BASE_URL}/api/v1/like/${blogId}`);
             setBlogs(blogs.map(blog =>
                 blog.id === blogId ? { ...blog, likes: blog.likes + 1 } : blog
             ));
@@ -49,7 +49,7 @@ const Home = () => {
         // Nếu chưa hiện, thì fetch bình luận
         if (!visibleComments[blogId]) {
             try {
-                const response = await axios.get(`http://localhost:8080/api/comment/${blogId}`);
+                const response = await axios.get(`${API_BASE_URL}/api/comment/${blogId}`);
                 setFetchedComments(prev => ({ ...prev, [blogId]: response.data }));
             } catch (error) {
                 console.error('Lỗi fetch bình luận:', error);
@@ -65,12 +65,12 @@ const Home = () => {
         if (!commentText) return;
 
         try {
-            await axios.post(`http://localhost:8080/api/v1/comment/${blogId}`, {
+            await axios.post(`${API_BASE_URL}/api/v1/comment/${blogId}`, {
                 comment: commentText,
             });
 
             // Làm mới comment sau khi đăng
-            const response = await axios.get(`http://localhost:8080/api/comment/${blogId}`);
+            const response = await axios.get(`${API_BASE_URL}/api/comment/${blogId}`);
             setFetchedComments(prev => ({ ...prev, [blogId]: response.data }));
             setNewComment(prev => ({ ...prev, [blogId]: '' }));
         } catch (error) {

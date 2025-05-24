@@ -9,7 +9,7 @@ const CreateBlog = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const navigate = useNavigate();
-
+    const API_BASE_URL= process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
     const handleCreate = async (e) => {
         e.preventDefault();
 
@@ -23,7 +23,7 @@ const CreateBlog = () => {
 
         try {
             console.log('userid: ', userId);
-            await axios.post('http://localhost:8080/api/v1/blog/create', blogData, {
+            await axios.post(`${API_BASE_URL}/api/v1/blog/create`, blogData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
