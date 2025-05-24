@@ -10,7 +10,7 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
-
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
     const handleRegister = async (e) => {
         e.preventDefault();
 
@@ -20,7 +20,7 @@ const Register = () => {
         }
 
         try {
-            const res = await axios.post('http://localhost:8080/api/register', {
+            const res = await axios.post(`${API_BASE_URL}/api/register`, {
                 username,
                 password,
             });
