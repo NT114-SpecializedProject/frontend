@@ -9,6 +9,7 @@ const CreateBlog = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const navigate = useNavigate();
+    const apiUrl = import.meta.env.VITE_API_URL;
     const handleCreate = async (e) => {
         e.preventDefault();
 
@@ -22,7 +23,7 @@ const CreateBlog = () => {
 
         try {
             console.log('userid: ', userId);
-            await axios.post(`/backend/api/v1/blog/create`, blogData, {
+            await axios.post(`${apiUrl}/api/v1/blog/create`, blogData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

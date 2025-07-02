@@ -10,10 +10,11 @@ const Home = () => {
     const [visibleComments, setVisibleComments] = useState({});
     const [fetchedComments, setFetchedComments] = useState({});
     const [newComment, setNewComment] = useState({});
+    const apiUrl = import.meta.env.VITE_API_URL;
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await axios.get(`/backend/api/v1/blog/all`);
+                const response = await axios.get(`${apiUrl}/api/v1/blog/all`);
 
                 // Kiểm tra lại giá trị authorId và đảm bảo nó có mặt
                 const enrichedBlogs = response.data.map(blog => ({
@@ -35,14 +36,38 @@ const Home = () => {
 
     const handleLike = async (blogId) => {
         try {
-            await axios.post(`/backend/api/v1/like/create`,
+            var response = await axios.post(`${apiUrl}/api/v1/like/action`,
                 { blogId: blogId, userId: userId }  // Gửi userId để xác định người dùng đã like
             );
-            setBlogs(blogs.map(blog =>
-                blog.id === blogId ? { ...blog, likes: blog.likes + 1 } : blog
-            ));
+
+            var action = response.data;
+
+            if (action === 'like') {
+                console.log(`Blog ${blogId} đã được thích.`);
+
+                setBlogs(blogs.map(blog =>
+                    blog.id === blogId ? { ...blog, likeCount: blog.likeCount + 1 } : blog
+                ));
+            }
+            else if (action === 'unlike') {
+                console.log(`Blog ${blogId} đã được bỏ thích.`);
+
+                setBlogs(blogs.map(blog =>
+                    blog.id === blogId ? { ...blog, likeCount: blog.likeCount - 1 } : blog
+                ));
+            }
         } catch (error) {
             console.error('Lỗi like:', error);
+        }
+    };
+
+    const handleDeleteBlog = async (blogId) => {
+        try {
+            await axios.delete(`${apiUrl}/api/v1/blog/delete/${blogId}`);
+            setBlogs(blogs.filter(blog => blog.id !== blogId));
+            console.log(`Blog ${blogId} đã được xóa.`);
+        } catch (error) {
+            console.error('Lỗi xóa blog:', error);
         }
     };
 
@@ -50,7 +75,7 @@ const Home = () => {
         // Nếu chưa hiện, thì fetch bình luận
         if (!visibleComments[blogId]) {
             try {
-                const response = await axios.get(`/backend/api/comment/${blogId}`);
+                const response = await axios.get(`${apiUrl}/api/comment/${blogId}`);
                 setFetchedComments(prev => ({ ...prev, [blogId]: response.data }));
             } catch (error) {
                 console.error('Lỗi fetch bình luận:', error);
@@ -66,12 +91,12 @@ const Home = () => {
         if (!commentText) return;
 
         try {
-            await axios.post(`/backend/api/v1/comment/${blogId}`, {
+            await axios.post(`${apiUrl}/api/v1/comment/${blogId}`, {
                 comment: commentText,
             });
 
             // Làm mới comment sau khi đăng
-            const response = await axios.get(`/backend/api/comment/${blogId}`);
+            const response = await axios.get(`${apiUrl}/api/comment/${blogId}`);
             setFetchedComments(prev => ({ ...prev, [blogId]: response.data }));
             setNewComment(prev => ({ ...prev, [blogId]: '' }));
         } catch (error) {
@@ -98,7 +123,7 @@ const Home = () => {
                                 onClick={() => handleLike(blog.id)}
                                 className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-4 py-2 rounded-lg cursor-pointer duration-200"
                             >
-                                👍 Thích ({blog.likes})
+                                👍 Thích ({blog.likeCount})
                             </button>
 
                             <button
@@ -112,7 +137,7 @@ const Home = () => {
                             {blog.authorId !== null && blog.authorId === parseInt(userId) && (
                                 <button
                                     className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg cursor-pointer duration-200"
-                                    onClick={() => console.log(`Deleting blog with id: ${blog.id}`)}  // Chức năng xóa sẽ được triển khai sau
+                                    onClick={() => handleDeleteBlog(blog.id)}  // Chức năng xóa sẽ được triển khai sau
                                 >
                                     🗑️ Xóa Blog
                                 </button>

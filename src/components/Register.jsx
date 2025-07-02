@@ -19,7 +19,7 @@ const Register = () => {
         }
 
         try {
-            const res = await axios.post(`/backend/api/register`, {
+            const res = await axios.post(`${apiUrl}/api/register`, {
                 username,
                 password,
             });
