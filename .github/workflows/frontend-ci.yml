@@ -1,0 +1,56 @@
+name: Frontend CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: ["main", "test", "staging"]
+    paths:
+      - "public/**"
+      - "src/**"
+  pull_request:
+    branches: ["main", "test", "staging"]
+    paths:
+      - "public/**"
+      - "src/**"
+
+jobs:
+  Analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  Build:
+    needs: Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 21.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build run
+        run: npm run build --if-present
+
+      - name: Test run
+        run: npm test -- --watchAll=false --passWithNoTests
