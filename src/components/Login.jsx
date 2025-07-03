@@ -16,7 +16,7 @@ const Login = () => {
         e.preventDefault();
         try {
             console.log('apiUrl: ', apiUrl);
-            const response = await axios.post(`${apiUrl}/api/v1/user/login`, {
+            const response = await axios.post(`${apiUrl}/user/login`, {
                 email,
                 password
             });

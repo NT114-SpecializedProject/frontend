@@ -14,7 +14,7 @@ const Home = () => {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await axios.get(`${apiUrl}/api/v1/blog/all`);
+                const response = await axios.get(`${apiUrl}/blog/all`);
 
                 // Kiểm tra lại giá trị authorId và đảm bảo nó có mặt
                 const enrichedBlogs = response.data.map(blog => ({
