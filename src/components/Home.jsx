@@ -36,7 +36,7 @@ const Home = () => {
 
     const handleLike = async (blogId) => {
         try {
-            var response = await axios.post(`${apiUrl}/api/v1/like/action`,
+            var response = await axios.post(`${apiUrl}/like/action`,
                 { blogId: blogId, userId: userId }  // Gửi userId để xác định người dùng đã like
             );
 
@@ -63,7 +63,7 @@ const Home = () => {
 
     const handleDeleteBlog = async (blogId) => {
         try {
-            await axios.delete(`${apiUrl}/api/v1/blog/delete/${blogId}`);
+            await axios.delete(`${apiUrl}/blog/delete/${blogId}`);
             setBlogs(blogs.filter(blog => blog.id !== blogId));
             console.log(`Blog ${blogId} đã được xóa.`);
         } catch (error) {
