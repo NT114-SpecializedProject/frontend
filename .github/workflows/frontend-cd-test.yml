@@ -48,4 +48,4 @@ jobs:
           sed -i "s#datnguyen10102004/frontend:[^[:space:]]*#datnguyen10102004/frontend:test-${{ github.sha }}#g" ./test/frontend/frontend-deploy.yaml
           git add ./test/frontend/frontend-deploy.yaml
           git commit -m "Update frontend version to test-${{ github.sha }} in test environment"
-          git push origin test
+          git push origin main
