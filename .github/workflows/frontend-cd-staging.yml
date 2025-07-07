@@ -6,6 +6,11 @@ on:
     paths:
       - "public/**"
       - "src/**"
+  pull_request:
+    branches: ["staging"]
+    paths:
+      - "public/**"
+      - "src/**"
 
 jobs:
   Build-image:
@@ -23,7 +28,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: continue3010/frontend:staged-${{ github.sha }}
+          tags: datnguyen10102004/frontend:staged-${{ github.sha }}
 
   Update-manifest:
     runs-on: ubuntu-latest
@@ -35,12 +40,12 @@ jobs:
         with:
           repository: NT114-SpecializedProject/infrastructures
           ref: "main"
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GIT_TOKEN }}
       - name: Update frontend manifest
         run: |
-          git config --global user.email "dinhquangdaklak2003@gmail.com"
-          git config --global user.name "Continue3010"
-          sed -i "s#continue3010/frontend:[^[:space:]]*#continue3010/frontend:staged-${{ github.sha }}#g" ./staging/frontend/frontend-deploy.yaml
+          git config --global user.email "datnguyen101004@gmail.com"
+          git config --global user.name "datnguyen10102004"
+          sed -i "s#datnguyen10102004/frontend:[^[:space:]]*#datnguyen10102004/frontend:staged-${{ github.sha }}#g" ./staging/frontend/frontend-deploy.yaml
           git add ./staging/frontend/frontend-deploy.yaml
           git commit -m "Update frontend version to staged-${{ github.sha }} in staging environment"
-          git push origin main
+          git push origin staging
