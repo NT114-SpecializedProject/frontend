@@ -48,4 +48,4 @@ jobs:
           sed -i "s#datnguyen10102004/frontend:[^[:space:]]*#datnguyen10102004/frontend:staged-${{ github.sha }}#g" ./staging/frontend/frontend-deploy.yaml
           git add ./staging/frontend/frontend-deploy.yaml
           git commit -m "Update frontend version to staged-${{ github.sha }} in staging environment"
-          git push origin staging
+          git push origin main
