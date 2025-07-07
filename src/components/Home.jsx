@@ -110,7 +110,7 @@ const Home = () => {
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
             <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl font-bold mb-6 text-center">📝 Danh sách bài viết</h2>
+                <h2 className="text-3xl font-bold mb-6 text-center">📝 Danh sách bài viết</h2>
 
                 {blogs.length > 0 ? blogs.map((blog) => (
                     <div key={blog.id} className="bg-white rounded-2xl shadow-lg p-6 mb-6">
