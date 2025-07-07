@@ -3,7 +3,7 @@ name: Frontend CI
 on:
   workflow_dispatch:
   push:
-    branches-ignore: ["main", "test", "staging"]
+    branches-ignore: ["main", "test", "staging", "dev"]
     paths:
       - "public/**"
       - "src/**"
